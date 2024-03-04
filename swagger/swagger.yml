@@ -1,0 +1,95 @@
+swagger: '2.0'
+info:
+  description: API para gestionar usuarios
+  version: '1.0.0'
+  title: Usuarios API
+host: 'api.ejemplo.com'
+basePath: '/v1'
+schemes:
+  - https
+paths:
+  /usuarios/{id}:
+    get:
+      tags:
+        - usuarios
+      summary: Obtiene un usuario por su ID
+      description: Retorna un solo usuario
+      operationId: getUsuarioPorId
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID del usuario a retornar
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          schema:
+            $ref: '#/definitions/Usuario'
+        '404':
+          description: Usuario no encontrado
+          schema:
+            $ref: '#/definitions/Error'
+  /usuarios:
+    post:
+      tags:
+        - usuarios
+      summary: Agrega un nuevo usuario
+      description: Crea un nuevo usuario con la información proporcionada
+      operationId: agregarUsuario
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: usuario
+          description: Usuario a agregar
+          required: true
+          schema:
+            $ref: '#/definitions/Usuario'
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+          schema:
+            $ref: '#/definitions/Usuario'
+        '400':
+          description: Solicitud incorrecta debido a entrada inválida
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Usuario:
+    type: object
+    required:
+      - nombreCompleto
+      - ciudad
+      - estado
+      - numeroTelefonico
+    properties:
+      nombreCompleto:
+        type: string
+        example: Juan Pérez
+      ciudad:
+        type: string
+        example: Ciudad de México
+      estado:
+        type: string
+        example: CDMX
+      numeroTelefonico:
+        type: string
+        example: '+521234567890'
+  Error:
+    type: object
+    required:
+      - codigo
+      - mensaje
+    properties:
+      codigo:
+        type: integer
+        format: int32
+        example: 404
+      mensaje:
+        type: string
+        example: Usuario no encontrado
