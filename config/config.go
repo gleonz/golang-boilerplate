@@ -31,12 +31,13 @@ type (
 	}
 )
 
+// NewConfig returns app config.
 func NewConfig() (*Config, error) {
 	cfg := &Config{}
 
-	err := cleanenv.ReadConfig("./configuration/config.yml", cfg)
+	err := cleanenv.ReadConfig("./config/config.yml", cfg)
 	if err != nil {
-		return nil, fmt.Errorf("configuration error: %w", err)
+		return nil, fmt.Errorf("config error: %w", err)
 	}
 
 	err = cleanenv.ReadEnv(cfg)
